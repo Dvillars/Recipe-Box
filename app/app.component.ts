@@ -4,25 +4,34 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
   <div class="container">
-  <h1>Recipe Box</h1>
-  <h3>{{appFocus}}</h3>
-  <hr>
-  <div [class]="ratingColor(currentRecipe)" (click)="isHot(currentRecipe)" *ngFor="let currentRecipe of Recipes">
-  <h4 (click)="showRecipe(currentRecipe)">{{currentRecipe.title}}</h4>
-  <!-- <h4 id="ingredients">{{currentRecipe.ingredients}}</h4> -->
-  <!-- <h4 id="directions">{{currentRecipe.directions}}</h4> -->
-  <button class="btn" (click)="editRecipe(currentRecipe)">Edit!</button> </div>
-  <hr>
-  <div *ngIf="selectedRecipe">
-  <h3>Current Ingredients: {{selectedRecipe.ingredients}}</h3>
-  <h3>Current Directions: {{selectedRecipe.directions}}</h3>
-  <h3>Edit Task</h3>
-  <label>Enter Recipe Directions:</label>
-  <input [(ngModel)]="selectedRecipe.directions">
-  <label>Enter Recipe Ingredients:</label>
-  <input [(ngModel)]="selectedRecipe.ingredients">
-  <button (click)="finishedEditing()">Done</button>
-  </div>
+    <h1>Recipe Box</h1>
+    <h3>{{appFocus}}</h3>
+    <hr>
+    <div [class]="ratingColor(currentRecipe)" (click)="isHot(currentRecipe)" *ngFor="let currentRecipe of Recipes">
+    <h4 (click)="showRecipe(currentRecipe)">{{currentRecipe.title}}</h4>
+    <!-- <h4 id="ingredients">{{currentRecipe.ingredients}}</h4> -->
+    <!-- <h4 id="directions">{{currentRecipe.directions}}</h4> -->
+    <button class="btn" (click)="editRecipe(currentRecipe)">Edit!</button> </div>
+    <hr>
+    <div *ngIf="selectedRecipeTitle">
+
+    <h3>Current Ingredients: {{selectedRecipeTitle.ingredients}}</h3>
+    <h3>Current Directions: {{selectedRecipeTitle.directions}}</h3>
+    <button (click)="finishedViewing()">Done</button>
+
+    </div>
+    <div *ngIf="selectedRecipe">
+
+    <h3>Current Ingredients: {{selectedRecipe.ingredients}}</h3>
+    <h3>Current Directions: {{selectedRecipe.directions}}</h3>
+    <h3>Edit Task</h3>
+    <label>Enter Recipe Directions:</label>
+    <input [(ngModel)]="selectedRecipe.directions">
+    <label>Enter Recipe Ingredients:</label>
+    <input [(ngModel)]="selectedRecipe.ingredients">
+    <button (click)="finishedEditing()">Done</button>
+
+    </div>
 
   </div>
   `
@@ -36,10 +45,17 @@ export class AppComponent {
     new Recipe("tuna salad/sandwhich", "tuna, mayo, musterd, and pickels ", "mix a even amount of mayo and musterd then add pickels and the tuna", 5)
   ];
   selectedRecipe: Recipe = null;
+  selectedRecipeTitle: Recipe = null;
 
   editRecipe(clickedRecipe) {
     this.selectedRecipe = clickedRecipe;
   }
+
+
+  showRecipe(clickedRecipe) {
+    this.selectedRecipeTitle = clickedRecipe;
+  }
+
 
   ratingColor(currentRecipe){
     if (currentRecipe.rating === 3){
@@ -51,13 +67,14 @@ export class AppComponent {
     }
   }
 
-  showRecipe(clickedRecipe : Recipe) {
-    console.log("hi");
+  finishedEditing() {
+    this.selectedRecipe = null;
   }
 
-  finishedEditing() {
-  this.selectedRecipe = null;
+  finishedViewing() {
+    this.selectedRecipeTitle = null;
   }
+
 }
 
 export class Recipe {
